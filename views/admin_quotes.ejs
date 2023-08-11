@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col">
+        <h3>Quotes</h3>
+        <p><i>View your project images here.</i></p>
+
+        <hr>
+
+        <% for (let i = 0; i < quoteList.length; i++) { %>
+            <div class="row my-3">
+                <div class="col text-left"> 
+
+                        <a class="btn btn-light" style="width: 100%; text-align: left;" data-toggle="collapse" href="#<%= quoteList[i].id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <div class="row">
+                                <div class="col">
+                                    <b>Name: </b> <%= quoteList[i].name %> <br> 
+                                    <i>Material: <%= quoteList[i].material %></i> 
+                                </div>
+                                <div class="col text-right">
+                                    <i><%= quoteList[i].timestamp %></i>
+                                </div>
+                            </div>
+                        </a>
+
+                    <div class="collapse my-3" id="<%= quoteList[i].id %>">
+                        <div class="card card-body">
+                            <h6><b>Phone: </b><%= quoteList[i].phone %></h6>
+                            <h6><b>Email: </b><%= quoteList[i].email %></h6>
+                            
+                            <br>
+                            <h3>Message:</h3>
+                            <p><%= quoteList[i].message %></p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+            
+    </div>
+</div>

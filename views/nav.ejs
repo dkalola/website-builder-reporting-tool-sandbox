@@ -1,0 +1,35 @@
+ <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="/" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="assets/img/logo.png" alt="">
+        <!-- <h1>UpConstruction<span>.</span></h1> -->
+      </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar"> 
+        <ul>
+          <li><a href="/" class="<%= activePage === 'home' ? 'active' : '' %>">Home</a></li>
+          <li><a href="/about" class="<%= activePage === 'about' ? 'active' : '' %>">About</a></li>
+          <li><a href="/ic" class="<%= activePage === 'ic' ? 'active' : '' %>">Investment Casting</a></li>
+          <li><a href="/wws" class="<%= activePage === 'services' ? 'active' : '' %>">Services</a></li>
+          <li><a href="/projects" class="<%= activePage === 'projects' ? 'active' : '' %>">Projects</a></li>
+          
+          <li><a href="/blog" class="<%= activePage === 'blog' ? 'active' : '' %>">Blog</a></li>
+          <li><a href="/contact" class="<%= activePage === 'contact' ? 'active' : '' %>">Contact</a></li>
+          <% if (user) { %>
+            <!-- Content to be displayed if the condition is true -->
+            <li style="color: white;"><a href="/admin"><%= user.email %></a></li>
+          <% } %>
+          <% if (logout) { %>
+            <!-- Content to be displayed if the condition is true -->
+            <li><a href="/logout" style=" color: #ff0123;">Logout</a></li>
+          <% } %>
+        </ul>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->

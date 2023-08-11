@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col">
+        <h3>Veiw your Blogs</h3>
+        <p><i>Add, Delete, Update your blogs here.</i></p>
+        <hr>
+
+         <% for (let i = 0; i < blogs.length; i++) { %>
+            <div class="col my-2">
+                <div class="card" style="width: 100%">
+                    
+                    <a class="btn btn-light" style="width: 100%; text-align: left;" data-toggle="collapse" href="#<%= blogs[i].id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <div class="row">
+                                <div class="col">
+                                    <h4><%= blogs[i].blog_title %></h4>
+                                    <h6><i><%= blogs[i].blog_subtitle %></i></h6>
+                                    <i><%= blogs[i].timestamp %></i>
+                                    
+                                    <br>
+                                    <span class="badge badge-secondary" style="color: black;"><%= blogs[i].blog_group %></span>
+                                    <% for (let j = 0; j < blogs[i].blog_tags.length; j++) { %>
+                                        <span class="badge badge-info" style="color: black;"><%= blogs[i].blog_tags[j] %></span>
+                                    <% } %>
+                                </div>
+                                <div class="col-2">
+                                    <img class="card-img-top" src="<%= blogs[i].img %>" alt="Card image cap">
+                                </div>
+                            </div>
+                    </a>
+                    <div class="collapse my-3" id="<%= blogs[i].id %>">
+                        <div class="card-body">
+                            <i>ID: <%= blogs[i].id %></i>
+                            <p class="card-text"><%- blogs[i].blog_body %> </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        <% } %>
+        
+    </div>
+</div>

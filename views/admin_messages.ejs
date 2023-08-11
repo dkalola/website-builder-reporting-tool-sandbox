@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col">
+        <h3>Messages</h3>
+        <p><i>View your project messages here.</i></p>
+        <hr>
+         <% for (let i = 0; i < messageList.length; i++) { %>
+            <div class="row my-3">
+                <div class="col text-left"> 
+
+                        <a class="btn btn-light" style="width: 100%; text-align: left;" data-toggle="collapse" href="#<%= messageList[i].id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <div class="row my-2">
+                                <div class="col">
+                                    <b>Name: </b> <%= messageList[i].name %> <br> 
+
+                                </div>
+                                <div class="col text-right">
+                                    <i><%= messageList[i].timestamp %></i>
+                                </div>
+                            </div>
+                        </a>
+
+                    <div class="collapse my-3" id="<%= messageList[i].id %>">
+                        <div class="card card-body">
+                            <h6><b>Phone: </b><%= messageList[i].phone %></h6>
+                            <h6><b>Email: </b><%= messageList[i].email %></h6>
+                            
+                            <br>
+                            <h3>Message:</h3>
+                            <p><%= messageList[i].message %></p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <h3>Gallery</h3>
+                <p><i>Add, Delete, Update your project images here.</i></p>
+            </div>
+            
+        </div>
+        
+        <hr>
+        <div class="row mb-5">
+            <div class="col-5">
+                
+                <form id="uploadForm" action="/admin" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"><b>Image Name</b></label><br>
+                        <i style="color: red;">First Write the name and then upload the image.</i>
+                        <input type="text" class="form-control" id="imageName" name="imageName">
+                    </div>
+                    <div class="form-group my-3">
+                        <input type="file" name="file" id="file" class="form-control-file">
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        <div class="row">
+        <% for (let i = 0; i < urls.length; i++) { %>
+            <div class="col-4 my-2">
+                <div class="card" style="width: auto">
+                    <img class="card-img-top" src="<%= urls[i].url %>" alt="Card image cap">
+                    <div class="card-body">
+                        <p class="card-text"><%= urls[i].path %></p>
+                        <a class="btn btn-danger" href="/admin?pg=Gallery&action=delete&imgurl=<%= urls[i].path %>" role="button">Delete</a>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        </div>
+    </div>
+</div>

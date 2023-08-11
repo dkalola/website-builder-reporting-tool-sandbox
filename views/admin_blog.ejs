@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col">
+        <h3>Create your Blog</h3>
+        <p><i>Add, Delete, Update your blogs here.</i></p>
+        <hr>
+
+        
+
+        <form id="uploadForm" action="/blogpost" method="post" enctype="multipart/form-data">
+            <div class="row my-3">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Blog Title</label>
+                        <input type="text" class="form-control" id="bt" name="bt" placeholder="This is title ...">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Sub Title</label>
+                        <input type="text" class="form-control" id="st" name="st" placeholder="This is subtitle ...">
+                    </div>
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Tags (With ",")</label>
+                        <input type="text" class="form-control" id="tags" name="tags" placeholder="tag1,tag2 ...">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Group</label>
+                        <input type="text" class="form-control" id="group" name="group" placeholder="Group Name" value="All">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group my-3">
+            <label for="exampleFormControlInput1">Choose Your Title Image</label>
+            <br>
+            <input type="file" name="file" id="file2" class="form-control-file">
+            <p id="uploadpass" style="color: green;" hidden>File Uploaded</p>
+        </div>
+            
+            <textarea id="body" name="body">
+            Welcome to Ganga Technocast!
+            </textarea>
+
+            <div class="col-md-12 text-center">
+                  <div class="loading" hidden>Loading</div>
+                  <div class="error-message" hidden></div>
+                  <div class="sent-message" hidden>Your message has been recorded. Thank you for contacting Ganga technocast!</div>
+
+                    <button type="submit" id="blogsubmit" class="btn btn-success my-3">Submit</button>
+            </div>
+
+        
+            
+        </form>
+        
+    </div>
+</div>

@@ -1,0 +1,398 @@
+    <!-- Dev step start -->
+  
+  <% if (user) { %>
+
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Change Report</h2>
+            <p>You can submit your changes using this form.</p>
+            <!-- Additional form fields can be added here -->
+            <form id="comment-form" class="php-email-form">
+
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Your Selection:</h6>
+                    <p id="your_selection"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Update Your Selection:</h6>
+                    <textarea id="update_selection" class="form-control" name="comment" rows="5" required></textarea>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Who is commenting?</h6>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+                    <h6>Your comment?</h6>
+                    <textarea id="comment" class="form-control" name="comment" required></textarea>
+                  </div>
+                </div>
+
+                <br>
+              <button type="submit" class="btn btn-secondary">Submit</button>
+              <button type="button" class="btn btn-danger"id="cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+  <script id="script">
+    // Path check. Disable reporting if admin page.
+    const currentPath = window.location.pathname;
+    if(currentPath == "/admin"){
+      document.getElementById("script").remove();
+      document.getElementById("myModal").remove();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainElement = document.querySelector('body');
+        mainElement.id = 'selectable-text'; // Set the new id value
+
+
+        const selectableText = document.getElementById('selectable-text');
+        const commentForm = document.getElementById('comment-form');
+        const submit = document.getElementById('submit');
+
+        // modal control
+        const modal = document.getElementById('myModal');
+        const closeBtn = document.querySelector('.close');
+        const cancel = document.getElementById('cancel');
+        let submitting = false; // Flag to track submission status
+
+        selectableText.addEventListener('mouseup', handleTextSelection);
+
+        closeBtn.addEventListener('click', (event) => {
+            commentForm.reset();
+            selectableText.addEventListener('mouseup', handleTextSelection);
+            modal.style.display = 'none';
+        });
+
+        cancel.addEventListener('click', (event) => {
+            commentForm.reset();
+            selectableText.addEventListener('mouseup', handleTextSelection);
+            modal.style.display = 'none';
+        });
+
+
+        function handleTextSelection(){
+          const selectedText = getSelectedText();
+          document.getElementById("your_selection").innerText = selectedText;
+          document.getElementById("update_selection").innerText = selectedText;
+          console.log(selectedText)
+          if (selectedText) {
+            selectableText.removeEventListener('mouseup', handleTextSelection);
+            modal.style.display = 'block';
+            openCommentForm( selectedText);
+          }
+        }
+        function openCommentForm(selectedText) {
+            if (submitting) {
+              return; // If submission is already in progress, do nothing
+            }
+            submitting = true; // Set the flag to indicate submission in progress
+          
+          
+          commentForm.addEventListener('submit', (event) => {
+            
+            event.preventDefault();
+            
+            const your_selection = document.getElementById('your_selection').innerText;
+            const update_selection = document.getElementById('update_selection').value;
+            const name = document.getElementById('name').value;
+            const comment = document.getElementById('comment').value;
+            
+            if (your_selection && update_selection && name && comment) {
+              const data = {
+                your_selection: your_selection,
+                update_selection: update_selection,
+                name: name,
+                comment: comment,
+                title: document.title,
+                url: window.location.href,
+              };
+              
+              submitComment(data);
+            }
+          });
+        }
+
+
+
+        function getSelectedText() {
+          if (window.getSelection) {
+            return window.getSelection().toString();
+          }
+          return '';
+        }
+
+
+        function submitComment(data) {
+
+          fetch('/report_change', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+          .then(response => response.json())
+          .then(data => {
+            commentForm.reset();
+            modal.style.display = 'none';
+          })
+          .catch(error => {
+            alert(error.message);
+          }).finally(() => {
+            selectableText.addEventListener('mouseup', handleTextSelection);
+            submitting = false; // Reset the flag after submission, whether success or failure
+          });
+        }
+
+    });
+
+  
+  </script>
+
+  <style>
+  /* Hide vertical scrollbar for the floating banner */
+  #banner::-webkit-scrollbar {
+    width: 0.5em; /* Set a width for the scrollbar */
+  }
+
+  #banner::-webkit-scrollbar-track {
+    background: transparent; /* Set a transparent background for the track */
+  }
+
+  #banner::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Make the thumb transparent */
+  }
+</style>
+
+  <div class="floating-banner text-center" id="banner" style="max-height: 100%; overflow-y: scroll;">
+    <i>You have Logged in as Administrator. You can select any text and submit a report to change. View reports <a href="/admin?pg=Edits">here</a>! <a type="button" id="Learn" class="btn btn-link">Learn More!</a></i>
+    
+    <div class="row" style=" border-radius: 5px;" id="leanHow" >
+      <div class="col mt-3">
+        <h4>How to use report tool!</h4>
+        <hr>
+        <div class="row mb-3 ">
+          <div class="col">
+            <img class="mb-2" src="assets/img/demo/img1.jpeg" alt="" height="300px">
+            <p><b>STEP 1: </b>Select the text that you want to creat the report. </p>
+          </div>
+          <div class="col">
+            <img src="assets/img/demo/img2.jpeg" alt="" height="300px">
+            <p><b>STEP 2: </b>Next Fillout the form. First field will allow you to change the text that you have selected. Second field is who is making this report and last is for your comments.</p>
+          </div>
+
+        </div>
+        <h4><span style="color: rgb(255, 49, 49);">What not to do</span> and <span style="color: greenyellow;">What to do</span>!</h4>
+        <hr>
+        <div class="row mb-3 ">
+          <div class="col">
+            <img class="mb-2" src="assets/img/demo/wrong.jpeg" alt="" height="300px">
+            <p><i class="bi bi-slash-circle-fill" style="color: rgb(255, 49, 49); font-size: 25px;"></i> Do not select the multiple paragraphs.</p>
+          </div>
+          <div class="col">
+            <img src="assets/img/demo/right.jpeg" alt="" height="300px">
+            <p><i class="bi bi-check-lg" style="color: greenyellow; font-size: 25px;"></i> Only select a single paragraphs</p>
+          </div>
+
+        </div>
+        <p><b>NOTE: </b>This will only work if you are using a PC. Mobile users I am sorry but this is not possible for them.</p>
+        
+        
+
+      </div>
+    </div>
+  </div>
+
+   <script>
+    const floatingBanner = document.querySelector('.floating-banner');
+    
+    // Show the banner after 5 seconds
+    setTimeout(() => {
+      floatingBanner.classList.add('show');
+
+      const learn = document.getElementById("Learn");
+      const learnHow = document.getElementById("leanHow");
+      let clicked = false;
+      learnHow.hidden = true;
+
+      learn.addEventListener("click",()=>{
+
+        if(clicked){
+          learn.innerText = "Learn More!";
+          learnHow.hidden = true;
+          clicked = false;
+        }else{
+          learn.innerText = "Close Learn More!";
+          clicked = true;
+          learnHow.hidden = false;
+        }
+      })
+
+    }, 1000);
+    
+    
+  </script>
+
+
+<!-- Search text script -->
+<script>
+
+  
+  document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchText = urlParams.get('searchText');
+      console.log(searchText);
+
+      if (searchText) {
+        document.getElementById("script").remove();
+        document.getElementById("myModal").remove();
+        const targetTextNode = findTextNodeContainingText(document.body, searchText);
+        if (targetTextNode) {
+          const targetElement = targetTextNode.parentElement;
+          console.log(targetElement);
+          targetElement.classList.add('highlighted');
+        }
+      }
+    });
+
+
+    function findTextNodeContainingText(rootNode, searchText) {
+      const walker = document.createTreeWalker(rootNode, NodeFilter.SHOW_TEXT, null, false);
+      while (walker.nextNode()) {
+        if (walker.currentNode.textContent.includes(searchText)) {
+          return walker.currentNode;
+        }
+      }
+      return null;
+    }
+    
+</script>
+  <% } %>
+
+
+  <!-- Dev step end -->
+ 
+ 
+ 
+ 
+ <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <img src="assets/img/logo.png" class="mb-3" alt="" width="50%">
+              <p>7QMM+QR2, Amin marg, Road, <br> Amrut Park, Kotecha Nagar, <br> Rajkot, Gujarat 360001, India</p>
+              <p><br><br>
+                <strong>Phone:</strong> +1 5589 55488 55<br>
+                <strong>Email:</strong> info@example.com<br>
+              </p>
+              <!-- <div class="social-links d-flex mt-3">
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+              </div> -->
+            </div>
+          </div><!-- End footer info column-->
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About us</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy policy</a></li> 
+            </ul>
+          </div><!-- End footer links column-->
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><a href="#">Web Design</a></li>
+              <li><a href="#">Web Development</a></li>
+              <li><a href="#">Product Management</a></li>
+              <li><a href="#">Marketing</a></li>
+              <li><a href="#">Graphic Design</a></li>
+            </ul>
+          </div><!-- End footer links column-->
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Hic solutasetp</h4>
+            <ul>
+              <li><a href="#">Molestiae accusamus iure</a></li>
+              <li><a href="#">Excepturi dignissimos</a></li>
+              <li><a href="#">Suscipit distinctio</a></li>
+              <li><a href="#">Dilecta</a></li>
+              <li><a href="#">Sit quas consectetur</a></li>
+            </ul>
+          </div><!-- End footer links column-->
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Nobis illum</h4>
+            <ul>
+              <li><a href="#">Ipsam</a></li>
+              <li><a href="#">Laudantium dolorum</a></li>
+              <li><a href="#">Dinera</a></li>
+              <li><a href="#">Trodelas</a></li>
+              <li><a href="#">Flexo</a></li>
+            </ul>
+          </div><!-- End footer links column-->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>UpConstruction</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/ -->
+          <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
+        </div>
+      </div>
+    </div>
+
+  </footer>
+  <!-- End Footer -->
+
+
+ <!-- <script src="https://cdn.tiny.cloud/1/gn0jxl7c4ru4q6vhpqdqbolsc7vvs0mhw5q401gdz3lwrwah/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
+
+  <!-- Tiny Config -->
+  <!-- <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
+    });
+  </script> -->

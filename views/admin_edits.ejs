@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col">
+        <h3>Change Reports</h3>
+        <p><i>View your project change reports here.</i></p>
+        <hr>
+         <% for (let i = 0; i < repots.length; i++) { %>
+            <div class="row my-3">
+                <div class="col text-left"> 
+
+                        <a class="btn btn-light" style="width: 100%; text-align: left;" data-toggle="collapse" href="#<%= repots[i].id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <div class="row my-2">
+                                <div class="col">
+                                    <b>Name: </b> <%= repots[i].name %> <br> 
+                                    <p><b>Comment: </b><%= repots[i].comment %></p>
+
+                                </div>
+                                <div class="col text-right">
+                                    <i><%= repots[i].timestamp %></i>
+                                </div>
+                            </div>
+                        </a>
+
+                    <div class="collapse my-3" id="<%= repots[i].id %>">
+                        <div class="card card-body">
+                            <% const searchTextQueryParam = `searchText=${encodeURIComponent(repots[i].your_selection)}`; %>
+                            <% const urlWithSearchParams = repots[i].url.includes('?') ? `${repots[i].url}&${searchTextQueryParam}` : `${repots[i].url}?${searchTextQueryParam}`; %>
+                            <h6><b>URL: </b><a href="<%= urlWithSearchParams %>" target="_blank"><%= repots[i].url %></a></h6>
+                            
+                            <br>
+                            <h3>Target Text:</h3>
+                            <p class="target-text"><%= repots[i].your_selection %></p>
+                            <h3>Your Change Text:</h3>
+                            <p class="change-text"><%= repots[i].update_selection %></p>
+                            <hr>
+                            <a type="button" style="color: white;" href="/delete_report?id=<%= repots[i].id %>" class="btn btn-info">Solved</a>
+                            <i>Clicking Solved will remove the report from the database. Please click only if you are sure.</i>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/diff/3.0.0/diff.min.js"></script>
+
+
