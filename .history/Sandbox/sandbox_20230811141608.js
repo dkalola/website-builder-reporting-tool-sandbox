@@ -1,5 +1,3 @@
-// This code allows the website to turn into editable website.
-
 // Function to assign the "editable" class and unique IDs to elements with text content
 function assignEditableClassAndUniqueIds() {
   const allElements = document.body.querySelectorAll("*");
